@@ -167,6 +167,7 @@ function ampCaptionTagReplacer($value)
      }
  }
 
+
 function generateMenuItems($key, $finalNaveList, $menu, $lastNav){
     if($menu->menu_item_parent == $lastNav->ID){ 
         ?>
@@ -186,6 +187,35 @@ function generateMenuItems($key, $finalNaveList, $menu, $lastNav){
     }
 }
 
+function soShareFromInstagram($atts)
+{
+    ob_start();
+    if(isset($atts['url']) && $atts['url'] != '')
+    {
+        $url = $atts['url'];
+        $width = isset($atts['width']) ? $atts['width'] : '600';
+        $height = isset($atts['height']) ? $atts['height'] : '450';
+        $layout = isset($atts['layout']) ? $atts['layout'] : 'responsive';
+        
+        if(isAmpVersion())
+        {
+            $url = str_replace('/', '', (explode('/p/', $url)[1]));
+            echo $result = '<amp-instagram data-shortcode="'. $url .'" width="'. $width .'" height="'. $height .'" layout="'. $layout .'"></amp-instagram>';
+        }
+        else
+        {
+            $url = "https://api.instagram.com/oembed/?url=" . $url;
+            $url .= ($width) ? '&maxwidth='.$width : '';
+            $result = json_decode(getCurlResult($url, 30));
+            $result = explode('<script', $result->html);
+            echo $result[0];
+            $script = '<script' . $result[1];
+            add_action('wp_footer', function()use($script){echo $script;});
+        }    
+    }
+    return ob_get_clean();
+}
+add_shortcode('instagram', 'soShareFromInstagram');
 
  /**
   * 
