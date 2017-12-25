@@ -29,3 +29,4 @@ This one provides support for the inbuilt post types as well as the custom post 
 ## NOTE
 Want specialized the plugin for your website?
 <br/>Reach us out via our skype : **bluesutier1991**
+
