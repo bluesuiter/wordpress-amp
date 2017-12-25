@@ -13,8 +13,8 @@ This one provides support for the inbuilt post types as well as the custom post 
 
 # Usage
 1. Instagram ShortCode
-   [instagram url=(required) width=(optional) height=(optional) layout=(optional)]
-   Default Values || width=600 height=450 layout="responsive"
+    [instagram url=(required) width=(optional) height=(optional) layout=(optional)]
+    Default Values || width=600 height=450 layout="responsive"
 
 2. Google Analytics Code
    Add GA-Code for your website in admin panel of WordPress AMP.
