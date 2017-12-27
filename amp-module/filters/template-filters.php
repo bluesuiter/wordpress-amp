@@ -23,13 +23,16 @@ function setTemplateDirectoryPath()
     }
 }
 
+
 function getAmpHeader(){
     return require_once(AMP_TEMPLATEPATH . 'header.php');
 }
 
+
 function getAmpFooter(){
     return require_once(AMP_TEMPLATEPATH . 'footer.php');
 }
+
 
 /* Filter Page Template */
 function ampTemplateFilter($type=false)
@@ -38,6 +41,7 @@ function ampTemplateFilter($type=false)
 }
 
 
+/* Filter Page Template */
 function ampPageTemplateFilter()
 {
     global $wp_query, $post;
@@ -48,22 +52,35 @@ function ampPageTemplateFilter()
 
 
 /* Filter Category Page Template */
-function ampCategoryTemplateFilter()
+function ampCategoryTemplateFilter($template)
 {
     global $wp_query;
     $category = $wp_query->query['category_name'];
 
-    if (locate_template('/amp/category-' . $category . '.php') != '') 
+    if (file_exists(AMP_TEMPLATEPATH . 'category-' . $category . '.php') != '') 
     {
         return AMP_TEMPLATEPATH . 'category-' . $category . '.php';
     }
-    elseif(locate_template('amp/category.php'))
+    else
     {
-        return AMP_TEMPLATEPATH . 'amp/category.php';
+        return AMP_TEMPLATEPATH . 'category.php';
+    }
+}
+
+
+/* Filter Taxonomy Page Template */
+function ampTaxonomyTemplateFilter($template)
+{
+    global $wp_query;
+    $taxonomy = $wp_query->query['taxonomy'];
+
+   if (file_exists(AMP_TEMPLATEPATH . 'taxonomy-' . $taxonomy . '.php') != '') 
+    {
+        return AMP_TEMPLATEPATH . 'taxonomy-' . $taxonomy . '.php';
     }
     else
     {
-        return plugin_dir_path(__DIR__) . DIRECTORY_SEPARATOR . 'theme' . DIRECTORY_SEPARATOR . 'category.php';
+        return AMP_TEMPLATEPATH . 'taxonomy.php';
     }
 }
 
@@ -71,26 +88,26 @@ function ampCategoryTemplateFilter()
 /* Filter Single Page Template */
 function ampSingleTemplateFilter($single)
 {
-    global $wp_query, $post;  
+    global $wp_query, $post;
     $curauth = get_userdata($wp_query->post->post_author);
     
     add_filter('the_content', 'ampFilterCaller', 99);
     
-    if (file_exists(AMP_TEMPLATEPATH . '/amp/single-author-' . $curauth->user_nicename . '.php'))
+    if (file_exists(AMP_TEMPLATEPATH . 'single-author-' . $curauth->user_nicename . '.php'))
     {
-        return AMP_TEMPLATEPATH . '/amp/single-author-' . $curauth->user_nicename . '.php';
+        return AMP_TEMPLATEPATH . 'single-author-' . $curauth->user_nicename . '.php';
     }
-    elseif (file_exists(AMP_TEMPLATEPATH . '/amp/single-author-' . $curauth->ID . '.php'))
+    elseif (file_exists(AMP_TEMPLATEPATH . 'single-author-' . $curauth->ID . '.php'))
     {
-        return AMP_TEMPLATEPATH . '/amp/single-author-' . $curauth->ID . '.php';
+        return AMP_TEMPLATEPATH . 'single-author-' . $curauth->ID . '.php';
     }
-    elseif (file_exists(AMP_TEMPLATEPATH . '/amp/single.php'))
+    elseif(file_exists(AMP_TEMPLATEPATH . 'single-' . $post->post_type . '.php'))
     {
-        return AMP_TEMPLATEPATH . '/amp/single.php';
+        return AMP_TEMPLATEPATH . 'single-' . $post->post_type . '.php';
     }
     else
     {
-        return AMP_TEMPLATEPATH . '/single.php';
+        return AMP_TEMPLATEPATH . 'single.php';
     }
 }
 
@@ -99,9 +116,9 @@ function ampSingleTemplateFilter($single)
 function _cfAmpArchiveTemplateFilter($archive_template)
 {
     global $wp_query, $archive;
-    if(file_exists(AMP_TEMPLATEPATH . '/amp/archive.php'))
+    if(file_exists(AMP_TEMPLATEPATH . 'archive.php'))
     {
-        $archive_template = AMP_TEMPLATEPATH . '/amp/archive.php';
+        $archive_template = AMP_TEMPLATEPATH . 'archive.php';
     }
     else
     {
