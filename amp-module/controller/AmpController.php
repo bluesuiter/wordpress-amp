@@ -25,6 +25,7 @@ function checkAmp()
         if(is_category() || is_tax())
         {
             add_filter('category_template', 'ampCategoryTemplateFilter', 10, 1); 
+            add_filter('taxonomy_template', 'ampCategoryTemplateFilter', 10, 1);
         }
         else if(is_page())
         {
@@ -47,7 +48,7 @@ function checkAmp()
     else
     {
         //ob_end_flush();
-        add_filter('single_template', 'nonAmpSingleTemplate');
+        //add_filter('single_template', 'nonAmpSingleTemplate');
         add_action('wp_head', 'cfAmpHtmlUrl');
     }
 }
