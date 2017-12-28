@@ -7,7 +7,7 @@ function setTemplateDirectoryPath()
     {   
         if(isAmpVersion())
         {
-            if(sopLodFile(get_template_directory() . DIRECTORY_SEPARATOR . 'amp'))
+            if(file_exists(get_template_directory() . DIRECTORY_SEPARATOR . 'amp'))
             {
                 define('AMP_TEMPLATEPATH', get_template_directory() . DIRECTORY_SEPARATOR . 'amp' . DIRECTORY_SEPARATOR);
                 define('AMP_TEMPLATEPATH', get_template_directory_uri() . DIRECTORY_SEPARATOR . 'amp' . DIRECTORY_SEPARATOR);
@@ -37,7 +37,14 @@ function getAmpFooter(){
 /* Filter Page Template */
 function ampTemplateFilter($type=false)
 {
-    return AMP_TEMPLATEPATH . 'index.php';
+    if (file_exists(AMP_TEMPLATEPATH . 'index.php')) 
+    {
+        return AMP_TEMPLATEPATH . 'index.php';
+    }
+    else
+    {
+        return 'Index Template Not Found';
+    }
 }
 
 
@@ -47,7 +54,14 @@ function ampPageTemplateFilter()
     global $wp_query, $post;
     $template = get_page_template_slug($post->ID);
     $template = !empty($template) ? $template : 'page.php';
-    return AMP_TEMPLATEPATH . $template;
+    if (file_exists(AMP_TEMPLATEPATH . $template)) 
+    {
+        return AMP_TEMPLATEPATH . $template;
+    }
+    else
+    {
+        return 'Page Template Not Found';
+    }    
 }
 
 
@@ -57,13 +71,17 @@ function ampCategoryTemplateFilter($template)
     global $wp_query;
     $category = $wp_query->query['category_name'];
 
-    if (file_exists(AMP_TEMPLATEPATH . 'category-' . $category . '.php') != '') 
+    if (file_exists(AMP_TEMPLATEPATH . 'category-' . $category . '.php')) 
     {
         return AMP_TEMPLATEPATH . 'category-' . $category . '.php';
     }
-    else
+    else if (file_exists(AMP_TEMPLATEPATH . 'category.php'))
     {
         return AMP_TEMPLATEPATH . 'category.php';
+    }
+    else
+    {
+        return 'Category Template Not Found';
     }
 }
 
@@ -78,9 +96,13 @@ function ampTaxonomyTemplateFilter($template)
     {
         return AMP_TEMPLATEPATH . 'taxonomy-' . $taxonomy . '.php';
     }
-    else
+    else if(file_exists(AMP_TEMPLATEPATH . 'taxonomy.php'))
     {
         return AMP_TEMPLATEPATH . 'taxonomy.php';
+    }
+    else
+    {
+        return 'Taxonomy Template Not Found';
     }
 }
 
@@ -101,13 +123,17 @@ function ampSingleTemplateFilter($single)
     {
         return AMP_TEMPLATEPATH . 'single-author-' . $curauth->ID . '.php';
     }
-    elseif(file_exists(AMP_TEMPLATEPATH . 'single-' . $post->post_type . '.php'))
+    elseif (file_exists(AMP_TEMPLATEPATH . 'single-' . $post->post_type . '.php'))
     {
         return AMP_TEMPLATEPATH . 'single-' . $post->post_type . '.php';
     }
-    else
+    elseif (file_exists(AMP_TEMPLATEPATH . 'single.php'))
     {
         return AMP_TEMPLATEPATH . 'single.php';
+    }
+    else
+    {
+        return 'Single Template Not Found.';
     }
 }
 
@@ -118,11 +144,10 @@ function _cfAmpArchiveTemplateFilter($archive_template)
     global $wp_query, $archive;
     if(file_exists(AMP_TEMPLATEPATH . 'archive.php'))
     {
-        $archive_template = AMP_TEMPLATEPATH . 'archive.php';
+        return AMP_TEMPLATEPATH . 'archive.php';
     }
     else
     {
-        $archive_template = plugin_dir_path(__DIR__) . 'theme/archive.php';
+        return 'Archive Template Not Found';
     }
-    return $archive_template;
 }

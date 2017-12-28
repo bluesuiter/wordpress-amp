@@ -35,8 +35,7 @@ if(!function_exists('sopLodFile'))
     {
         try
         {
-            if(file_exists($file))
-            {
+            if(file_exists($file) && is_file($file)){
                 require_once($file);
                 return true;
             }
