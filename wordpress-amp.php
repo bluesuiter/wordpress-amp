@@ -4,7 +4,7 @@
   Plugin URI: https://github.com/bluesuiter/wordpress-amp
   Description: Plugin for making website AMP compatible.
   Author: BlueSuiter
-  Version: 1.12.17
+  Version: 1.14
   Author URI:
  */
 
