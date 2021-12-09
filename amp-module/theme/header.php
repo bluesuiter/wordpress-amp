@@ -88,11 +88,12 @@
         <?php 
             $custom_logo_id = get_theme_mod('custom_logo');
             $logo = wp_get_attachment_image_src($custom_logo_id , 'full');
-            $logo = !empty($logo) ? $logo[0] : get_template_directory_uri() . 'images/logo.png';
         ?>
         <button class="tab hamburger" id="menu-button" on='tap:sidebar.toggle'>=</button>
-        <a class="brandLogo" href="<?php echo site_url('/amp'); ?>">
-            <amp-img width="322" height="32" layout="responsive" src="<?php echo $logo; ?>"></amp-img>
+         <a class="brandLogo" href="<?php echo site_url('/amp'); ?>">
+			    <?php if(!empty($logo)){ ?>
+            	<amp-img width="322" height="32" layout="responsive" src="<?php echo $logo[0]; ?>"></amp-img>
+			    <?php }else{ echo '<span class="brandName">'.get_bloginfo('name').'</span>'; } ?>
         </a>
         
         <p class="search-holder" on="tap:search-blog" role="button" tabindex="frmsrch1"><span class="searchbox-icon"></span></p>
