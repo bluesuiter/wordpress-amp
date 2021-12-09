@@ -5,7 +5,7 @@
  * */
 function checkAmp()
 {
-    global $wp_query;
+    global $wp_query, $wp;
     if(isset($wp_query->query) && array_key_exists('amp', $wp_query->query))
     {
         if(!defined('AMP_VERSION'))
@@ -41,7 +41,7 @@ function checkAmp()
         }
         else
         {           
-            wp_redirect(str_replace(['amp/', 'amp'], ['', ''], $current_url));
+            wp_redirect(str_replace(['amp/', 'amp'], ['', ''], home_url($wp->request)));
             ob_end_flush();
         }
     }
